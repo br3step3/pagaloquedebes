@@ -2,17 +2,16 @@
 
 Aplicación React + Vite para repartir gastos entre miembros de una comunidad.
 
-## Uso
+## Uso local
 
 ```bash
 npm install
 npm run dev
 ```
 
-Para producción:
+## Deploy en Netlify
 
-```bash
-npm run build
-```
-
-Y luego deploy a Netlify.
+- Subir este proyecto a GitHub
+- Importar el repositorio en Netlify
+- Netlify detectará Vite automáticamente
+- ¡Hecho!

@@ -1,7 +1,7 @@
+
 import React, { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
+import './index.css';
 
 const ExpenseSplitter = () => {
   const [members, setMembers] = useState([]);
@@ -49,17 +49,17 @@ const ExpenseSplitter = () => {
   };
 
   return (
-    <div className="p-4 space-y-4 w-[360px] mx-auto">
-      <h1 className="text-xl font-bold text-center">¡Paga lo que debes!</h1>
+    <div className="container">
+      <h1 className="title">¡Paga lo que debes!</h1>
       {members.map((member, index) => {
         const balance = validMembers.find(m => m.name === member.name)
           ? Number(member.expense) - perPerson
           : 0;
         return (
-          <div key={index} className="flex items-center gap-2">
+          <div key={index} className="member-row">
             <X
               onClick={() => handleDelete(index)}
-              className="w-5 h-5 text-white bg-red-600 rounded-full p-1 hover:bg-red-700 cursor-pointer"
+              className="delete-icon"
             />
             <input
               type="text"
@@ -70,7 +70,7 @@ const ExpenseSplitter = () => {
                 updated[index].name = e.target.value;
                 setMembers(updated);
               }}
-              className="border rounded px-2 py-1 w-28 placeholder-gray-400"
+              className="input-name"
             />
             <input
               type="text"
@@ -78,35 +78,36 @@ const ExpenseSplitter = () => {
               placeholder="€"
               value={member.expense === 0 ? "" : member.expense}
               onChange={(e) => handleChange(index, e.target.value)}
-              className="border rounded px-2 py-1 w-20 text-right placeholder-gray-400"
+              className="input-amount"
             />
-            <span className="text-sm text-black text-right w-28">
-              {balance > 0 ? "recibe" : "debe"} <span className={balance > 0 ? "text-green-600" : "text-red-600"}>{Math.abs(balance).toFixed(2)}</span>
+            <span className="balance-label">
+              {balance > 0 ? "recibe" : "debe"} <span className={balance > 0 ? "amount-positive" : "amount-negative"}>{Math.abs(balance).toFixed(2)}</span>
             </span>
           </div>
         );
       })}
-      <div className="flex justify-center">
-        <Button onClick={() => setMembers([...members, { name: "", expense: "" }])}>
+      <div className="add-button-container">
+        <button
+          onClick={() => setMembers([...members, { name: "", expense: "" }])}
+          className="add-button"
+        >
           Añadir Miembro
-        </Button>
+        </button>
       </div>
-      <Card className="w-full bg-gray-50">
-        <CardContent className="space-y-2">
-          <p>Total Gastado: <span className="float-right">{total.toFixed(2)}</span></p>
-          <p>Cada uno debe pagar: <span className="float-right">{perPerson.toFixed(2)}</span></p>
-          <hr className="my-2 border-t border-gray-300" />
-          <h2 className="font-semibold clear-both">Liquidar Deudas:</h2>
-          <ul>
-            {settleDebts().map((t, idx) => (
-              <li key={idx} className="flex justify-between">
-                <span>{t.text}</span>
-                <span className="font-mono tabular-nums">{t.amount}</span>
-              </li>
-            ))}
-          </ul>
-        </CardContent>
-      </Card>
+      <div className="summary">
+        <p>Total Gastado: <span className="right">{total.toFixed(2)}</span></p>
+        <p>Cada uno debe pagar: <span className="right">{perPerson.toFixed(2)}</span></p>
+        <hr />
+        <h2>Liquidar Deudas:</h2>
+        <ul>
+          {settleDebts().map((t, idx) => (
+            <li key={idx} className="transaction">
+              <span>{t.text}</span>
+              <span>{t.amount}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };

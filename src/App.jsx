@@ -60,7 +60,9 @@ const ExpenseSplitter = () => {
             <X
               onClick={() => handleDelete(index)}
               className="delete-icon"
+              size={12} // 👈 adjust this number to control size (try 12–18)
             />
+
             <input
               type="text"
               placeholder="nombre"
